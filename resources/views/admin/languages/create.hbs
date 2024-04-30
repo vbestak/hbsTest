@@ -1,0 +1,29 @@
+<div class="container">
+  <h2>Create New Language</h2>
+  <form id="languageForm" method="post" action="/admin/languages">
+    <div class="mb-3">
+      <label for="code" class="form-label">Language Code:</label>
+      <input type="text"
+             value="{{language.code}}"
+             class="form-control {{setErrorClass errors "code"}}" id="code"
+             name="code" placeholder="Enter language code" required>
+
+      {{#each (getFieldErrors errors "code")}}
+        <div class="invalid-feedback">{{ this }}</div>
+      {{/each}}
+    </div>
+    <div class="mb-3">
+      <label for="iconSrc" class="form-label">Icon Source:</label>
+      <input type="text" value="{{language.iconSrc}}"
+             class="form-control {{setErrorClass errors "iconSrc"}}" id="iconSrc" name="iconSrc"
+             placeholder="Enter icon source URL" required>
+
+      {{#each (getFieldErrors errors "iconSrc")}}
+        <div class="invalid-feedback">{{ this }}</div>
+      {{/each}}
+    </div>
+
+    <a href="/admin/languages" type="button" class="btn btn-primary btn-danger float-end">Back</a>
+    <button type="submit" class="btn btn-primary float-end  me-2">Create Language</button>
+  </form>
+</div>
