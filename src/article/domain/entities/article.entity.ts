@@ -30,8 +30,8 @@ export class Article extends BaseDbObjectEntity {
   @Prop()
   enabled: boolean;
 
-  @Prop()
-  publishedAt: Date;
+  @Prop({ isRequired: false })
+  publishedAt?: Date;
 
   @Prop()
   scheduledAt: Date;

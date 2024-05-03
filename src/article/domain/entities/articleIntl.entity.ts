@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { BaseDbObjectEntity } from "../../../common/baseDbObject.entity";
 import { Language } from "../../../language/domain/entities/language.entity";
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
 
 @Schema({timestamps: true})
 export class ArticleIntl extends BaseDbObjectEntity {
@@ -15,7 +15,7 @@ export class ArticleIntl extends BaseDbObjectEntity {
   urlSlug: string;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Language.name })
-  language: Language;
+  language: Language | Types.ObjectId;
 
   constructor(partial: Partial<ArticleIntl>) {
     super();

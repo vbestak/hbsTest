@@ -1,15 +1,28 @@
-const COMPONENT_TYPES = ["FILE", "IMAGE", "LINK", "PARAGRAPH", "QUESTIONNAIRE", "QUOTE", "VIDEO"];
+import { paragraphComponent } from "./components/paragraph.js";
+import { fileComponent } from "./components/file.js";
+import { imageComponent } from "./components/image.js";
+import { linkComponent } from "./components/link.js";
+import { questionnaireComponent } from "./components/questionnaire.js";
+import { quoteComponent } from "./components/quote.js";
+import { videoComponent } from "./components/video.js";
+
+document.addEventListener("DOMContentLoaded", function() {
+  const createButton = document.getElementById("createComponentButton");
+  createButton.addEventListener("click", createComponent);
+});
+
+
+const COMPONENT_TYPES = ["EMPTY", "PARAGRAPH", "FILE", "IMAGE",/* "LINK", "QUESTIONNAIRE"*/, "QUOTE", "VIDEO"];
 const COMPONENT_BASE = `
 <div class="card card-body mt-2">
   <div class="mb-3 js-stay">
-    <label>Component Type:</label>
-    <select name="componentType" class="form-select">
+    <label>Component:</label>
+    <select name="type" class="form-select">
       ${COMPONENT_TYPES.map((type) => `<option value="${type}">${type}</option>`)}
     </select>
    </div>
 </div>
 `;
-
 
 function createComponent() {
   const container = document.getElementById("componentContainer");
@@ -53,44 +66,57 @@ function displayInputFields(selectedType, cardBody) {
 }
 
 function generateFileInputs(container) {
-  // TODO
+  var data = {
+    content: "file"
+  };
+
+  container.insertAdjacentHTML("beforeend", fileComponent(data));
 }
 
 function generateImageInputs(container) {
-  // TODO
+  var data = {
+    content: "image"
+  };
+
+  container.insertAdjacentHTML("beforeend", imageComponent(data));
 }
 
 function generateLinkInputs(container) {
-  // TODO
+  var data = {
+    content: "link"
+  };
+
+  container.insertAdjacentHTML("beforeend", linkComponent(data));
 }
 
 function generateParagraphInputs(container) {
-  const textAreaHTML = `
-     <div class="mb-3">
-      <label for="description" class="form-label">Text content: {{title}}</label>
-      <textarea class="form-control" id="description" name="data">{{content}}</textarea>
-    </div>
-  `;
-
-  var template = Handlebars.compile(textAreaHTML);
-
-// Define data for rendering
   var data = {
-    title: "Hello",
-    content: "This is some content."
+    content: "para"
   };
 
-  container.insertAdjacentHTML("beforeend", template(data));
+  container.insertAdjacentHTML("beforeend", paragraphComponent(data));
 }
 
 function generateQuestionnaireInputs(container) {
-  // TODO
+  var data = {
+    content: "q"
+  };
+
+  container.insertAdjacentHTML("beforeend", questionnaireComponent(data));
 }
 
 function generateQuoteInputs(container) {
-  // TODO
+  var data = {
+    content: "quote"
+  };
+
+  container.insertAdjacentHTML("beforeend", quoteComponent(data));
 }
 
 function generateVideoInputs(container) {
-  // TODO
+  var data = {
+    content: "video"
+  };
+
+  container.insertAdjacentHTML("beforeend", videoComponent(data));
 }

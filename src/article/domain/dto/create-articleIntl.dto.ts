@@ -1,10 +1,10 @@
-import { Language } from "../../../language/domain/entities/language.entity";
-import { IsOptional, MaxLength, MinLength } from "class-validator";
+import { IsMongoId, IsNotEmpty, IsOptional, MaxLength } from "class-validator";
 import { ArticleIntl } from "../entities/articleIntl.entity";
+import { Types } from "mongoose";
 
 export class CreateArticleIntlDto extends ArticleIntl {
   @MaxLength(150)
-  @MinLength(1)
+  @IsNotEmpty()
   title: string;
 
   @MaxLength(500)
@@ -12,8 +12,9 @@ export class CreateArticleIntlDto extends ArticleIntl {
   description: string;
 
   @MaxLength(50)
-  @MinLength(1)
+  @IsNotEmpty()
   urlSlug: string;
 
-  language: Language;
+  @IsMongoId()
+  language: Types.ObjectId;
 }

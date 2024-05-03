@@ -1,0 +1,20 @@
+{{#each components}}
+  {{#if_eq type 'IMAGE'}}
+    {{> article/components/image}}
+  {{/if_eq}}
+  {{#if_eq type 'LINK'}}
+    {{> article/components/link}}
+  {{/if_eq}}
+  {{#if_eq type 'PARAGRAPH'}}
+    {{> article/components/paragraph}}
+  {{/if_eq}}
+  {{#if_eq type 'QUESTIONNAIRE'}}
+    {{> article/components/questionnaire}}
+  {{/if_eq}}
+  {{#if_eq type 'QUOTE'}}
+    {{> article/components/quote}}
+  {{/if_eq}}
+  {{#if_eq type 'VIDEO'}}
+    {{> article/components/video}}
+  {{/if_eq}}
+{{/each}}

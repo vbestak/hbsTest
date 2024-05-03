@@ -1,22 +1,25 @@
 import { ArticleComponent } from "../entities/components/articleComponent.entity";
-import { IsBoolean, IsDate, IsNotEmpty, Max, MaxLength, ValidateNested } from "class-validator";
-import { Type } from "class-transformer";
+import { IsBoolean, IsDate, IsNotEmpty, IsOptional, Max, MaxLength, ValidateNested } from "class-validator";
+import { Transform, Type } from "class-transformer";
 import { CreateArticleIntlDto } from "./create-articleIntl.dto";
+import { ArticleDocument } from "../entities/article.entity";
 
-export class CreateArticleDto {
+export class CreateArticleDto implements Partial<ArticleDocument> {
   @MaxLength(120)
   @IsNotEmpty()
   name: string;
 
   @MaxLength(120)
+  @IsNotEmpty()
   author: string;
 
   @MaxLength(250)
+  @IsNotEmpty()
   coverImage: string;
 
   @Max(120)
   @IsNotEmpty()
-  @Type(()=>Number)
+  @Type(() => Number)
   timeToRead: number;
 
   @ValidateNested({ each: true })
@@ -28,14 +31,17 @@ export class CreateArticleDto {
   components: ArticleComponent[];
 
   @IsBoolean()
-  @Type(()=>Boolean)
-  enabled: boolean;
+  @IsOptional()
+  @Type(() => Boolean)
+  enabled: boolean = false;
 
   @IsDate()
-  @Type(()=>Date)
-  publishedAt: Date;
+  @Type(() => Date)
+  @Transform((params) => {
+    const date = params.value;
 
-  @IsDate()
-  @Type(()=>Date)
+    if (date.toString() !== "Invalid Date")
+      return date.toISOString().slice(0, 16);
+  }, { toPlainOnly: true })
   scheduledAt: Date;
 }

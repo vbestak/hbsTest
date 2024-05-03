@@ -1,12 +1,13 @@
 import { ValidationError } from "class-validator";
+import { mapErrors, MappedValidationError } from "../../util/validation/errorMapper";
 
 export class ValidationFailedError extends Error {
-  validationErrors: ValidationError[];
+  validationErrors: MappedValidationError[];
   target: any;
 
   constructor(validationErrors) {
     super();
-    this.validationErrors = validationErrors;
+    this.validationErrors = mapErrors(validationErrors);
     this.target = validationErrors[0].target
   }
 }

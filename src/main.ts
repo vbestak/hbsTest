@@ -4,7 +4,7 @@ import { join } from "path";
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { useRequestLogging } from "./util/logging/logger";
 import { useSwagger } from "./util/swagger/swagger";
-import { ClassSerializerInterceptor, Logger, ValidationPipe } from "@nestjs/common";
+import { ClassSerializerInterceptor, Logger } from "@nestjs/common";
 import { useContainer } from "class-validator";
 import * as mongoose from "mongoose";
 import { ConfigService } from "@nestjs/config";
@@ -13,10 +13,12 @@ import * as passport from "passport";
 import * as hbs from "express-handlebars";
 import { engine } from "express-handlebars";
 import * as MongoDBStore from "connect-mongodb-session";
-import { ValidationFailedError } from "./common/errors/validationFailedError";
 import { UnauthorizedFilter } from "./common/filters/unauthorizedFilter";
 import { getFieldErrorsHelper } from "./util/handlebars/getFieldErrors.helper";
-import { setErrorClass } from "./util/handlebars/setErrorClass.helper";
+import { setErrorClassHelper } from "./util/handlebars/setErrorClass.helper";
+import { TransformPipe } from "./common/pipes/transform.pipe";
+import { AuthInfoInterceptor } from "./common/interceptors/authInfoInterceptor";
+import { ifEqHelper } from "./util/handlebars/ifEq.helper";
 
 
 async function bootstrap() {
@@ -42,16 +44,10 @@ async function bootstrap() {
 
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
-  app.useGlobalPipes(
-    new ValidationPipe({
-      transform: true,
-      whitelist: true,
-      forbidNonWhitelisted: true,
-      exceptionFactory: (errors) => new ValidationFailedError(errors)
-    })
-  );
+  app.useGlobalPipes(new TransformPipe());
 
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
+  app.useGlobalInterceptors(new AuthInfoInterceptor());
 
   // express-handlebars setup
   app.useStaticAssets(join(__dirname, "..", "resources", "static"));
@@ -65,7 +61,8 @@ async function bootstrap() {
       partialsDir: join(__dirname, "..", "resources", "views", "partials"),
       helpers: {
         getFieldErrors: getFieldErrorsHelper,
-        setErrorClass: setErrorClass
+        setErrorClass: setErrorClassHelper,
+        if_eq: ifEqHelper
       }
     })
   );

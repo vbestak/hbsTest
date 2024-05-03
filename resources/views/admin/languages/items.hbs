@@ -16,11 +16,13 @@
       {{#each data}}
         <tr>
           <td>{{@index}}</td>
-          <td>{{this.iconSrc}}</td>
+          <td><img src="{{this.iconSrc}}" width="24px" height="24px"/></td>
           <td>{{this.code}}</td>
-          <td class="text-end">
+          <td class="d-flex justify-content-end align-items-center gap-2">
             <a href="/admin/languages/{{this.id}}" class="btn btn-primary"><i class="fas fa-edit"></i> Edit</a>
-            <button type="button" data-id="{{this.id}}" class="btn btn-danger delete-btn"><i class="fas fa-trash"></i> Delete</button>
+            <form method="post" action="/admin/languages/delete/{{this.id}}">
+              <button type="submit" data-id="{{this.id}}" class="btn btn-danger delete-btn"><i class="fas fa-trash"></i> Delete</button>
+            </form>
           </td>
         </tr>
       {{/each}}
@@ -38,4 +40,5 @@
     display: none
   }
 </style>
+
 <script src="/languages/index.js"></script>

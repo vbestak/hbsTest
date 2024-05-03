@@ -1,32 +1,32 @@
-import { ValidationError } from "class-validator";
+import { MappedValidationError } from "../validation/errorMapper";
 
-export function getFieldErrorsHelper(errors: ValidationError[], field: string): string[] {
-  const fieldErrors: string[] = [];
 
-  if (!errors) return fieldErrors;
+export function getFieldErrorsHelper(errors: MappedValidationError[] | undefined, propertyKey: string): string[] {
+  if(!errors?.length) return [];
 
-  errors.forEach(error => {
-    let fieldValue = error.target;
-    const fieldParts = field.split(".");
+  for (const error of errors) {
+    const constraints = getConstraintsForPropertyRecursively(error, propertyKey);
+    if (constraints) {
+      return constraints;
+    }
+  }
 
-    for (const part of fieldParts) {
-      fieldValue = fieldValue[part];
-      if (fieldValue === undefined) {
-        break;
+  return [];
+}
+
+function getConstraintsForPropertyRecursively(error: MappedValidationError, propertyKey: string): string[] {
+  if (error.property === propertyKey) {
+    if (error.constraints) {
+      return error.constraints;
+    }
+  }
+
+  if (error.children) {
+    for (const childError of error.children) {
+      const constraints = getConstraintsForPropertyRecursively(childError, propertyKey);
+      if (constraints) {
+        return constraints;
       }
     }
-
-    if (fieldValue !== undefined && error.property === field) {
-      const errorMessages = Object.values(error.constraints || {});
-      fieldErrors.push(...errorMessages);
-    } else if (error.children && Array.isArray(error.children)) {
-      error.children.forEach(childError => {
-        const fields = fieldParts.slice(1, fieldParts.length).join(".");
-        const nestedErrors = getFieldErrorsHelper([childError], fields);
-        fieldErrors.push(...nestedErrors);
-      });
-    }
-  });
-
-  return fieldErrors;
+  }
 }

@@ -1,65 +1,90 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Post,
-  Render,
-  Res,
-  UseFilters,
-  UseGuards,
-  UseInterceptors
-} from "@nestjs/common";
-import { Article, ArticleDocument } from "./domain/entities/article.entity";
+import { Body, Controller, Get, Param, Post, Render, Req, Res, UseGuards } from "@nestjs/common";
 import { ArticleService } from "./service/article.service";
-import { BaseController } from "../common/baseController.controller";
 import { ParseObjectIdPipe } from "../common/pipes/parseObjectId.pipe";
 import { Types } from "mongoose";
 import { CreateArticleDto } from "./domain/dto/create-article.dto";
 import { UpdateArticleDto } from "./domain/dto/update-article.dto";
-import { AuthInfoInterceptor } from "../common/interceptors/authInfoInterceptor";
-import { ValidationExceptionFilter } from "../common/filters/validationExceptionFilter";
-import { Response } from "express";
+import { Request, Response } from "express";
 import { AuthenticatedGuard } from "../auth/guard/authenticated.guard";
+import { validate } from "../util/validation/validate";
+import { LanguageService } from "../language/service/language.service";
 
 @Controller("admin/articles")
 @UseGuards(AuthenticatedGuard)
-export class ArticleController extends BaseController<ArticleDocument, Article> {
-  constructor(private readonly articleService: ArticleService) {
-    super(articleService);
+export class ArticleController {
+  constructor(private readonly articleService: ArticleService,
+              private readonly languageService: LanguageService) {
   }
 
   @Get("create")
-  @UseInterceptors(AuthInfoInterceptor)
   @Render("admin/articles/create")
   async createView() {
+    const languages = await this.languageService.findAll();
+
+    return { languages };
   }
 
   @Get()
-  @UseInterceptors(AuthInfoInterceptor)
   @Render("admin/articles/items")
   async findAll() {
-    return await super.findAll();
+    const data = await this.articleService.findAll();
+    return { data };
   }
 
   @Post()
-  @UseFilters(new ValidationExceptionFilter("admin/articles/create", "article"))
-  async createNew(@Res() res: Response, @Body() createDto: CreateArticleDto) {
+  async create(@Req() req: Request, @Res() res: Response, @Body() createDto: CreateArticleDto) {
+    const errors = await validate(createDto);
+
+    if (errors) {
+      const languages = await this.languageService.findAll();
+
+      return res.render("admin/articles/create", {
+        errors,
+        article: createDto,
+        isAuthenticated: req.isAuthenticated(),
+        languages,
+        url: req.url,
+      });
+    }
+
+    const result = await this.articleService.create(createDto);
     res.redirect("/admin/articles");
-    return await super.create(createDto);
+
+    return result;
   }
 
-  @Post(":id")
-  @UseFilters(new ValidationExceptionFilter("admin/articles/update", "data"))
-  async updateNew(@Res() res: Response, @Param("id", ParseObjectIdPipe) id: Types.ObjectId, @Body() updateDto: UpdateArticleDto) {
+  @Post("update/:id")
+  async update(@Req() req: Request, @Res() res: Response, @Param("id", ParseObjectIdPipe) id: Types.ObjectId, @Body() updateDto: UpdateArticleDto) {
+    const errors = await validate(updateDto);
+
+    if (errors) {
+      return res.render("admin/articles/update", {
+        errors,
+        data: updateDto,
+        isAuthenticated: req.isAuthenticated(),
+        url: req.url
+      });
+    }
+
+    const result = await this.articleService.update(id, updateDto);
     res.redirect("/admin/articles");
-    return await super.update(id, updateDto);
+
+    return result;
+  }
+
+  @Post("delete/:id")
+  @Render("admin/articles/items")
+  async remove(@Param("id", ParseObjectIdPipe) id: Types.ObjectId) {
+    await this.articleService.delete(id);
+
+    const data = await this.articleService.findAll();
+    return { data };
   }
 
   @Get(":id")
-  @UseInterceptors(AuthInfoInterceptor)
   @Render("admin/articles/update")
   async findOne(@Param("id", ParseObjectIdPipe) id: Types.ObjectId) {
-    return await super.findOne(id);
+    const data = await this.articleService.findById(id);
+    return { data };
   }
 }

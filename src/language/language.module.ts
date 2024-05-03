@@ -10,5 +10,6 @@ import {Language, LanguageSchema} from "./domain/entities/language.entity";
   ],
   controllers: [LanguageController],
   providers: [LanguageService],
+  exports: [LanguageService]
 })
 export class LanguageModule {}

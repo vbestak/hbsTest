@@ -1,65 +1,82 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Post,
-  Render,
-  Res,
-  UseFilters,
-  UseGuards,
-  UseInterceptors
-} from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Render, Req, Res, UseGuards } from "@nestjs/common";
 import { LanguageService } from "./service/language.service";
 import { CreateLanguageDto } from "./domain/dto/create-language.dto";
 import { UpdateLanguageDto } from "./domain/dto/update-language.dto";
-import { BaseController } from "../common/baseController.controller";
-import { Language, LanguageDocument } from "./domain/entities/language.entity";
 import { ParseObjectIdPipe } from "../common/pipes/parseObjectId.pipe";
 import { Types } from "mongoose";
-import { AuthInfoInterceptor } from "../common/interceptors/authInfoInterceptor";
 import { AuthenticatedGuard } from "../auth/guard/authenticated.guard";
-import { ValidationExceptionFilter } from "../common/filters/validationExceptionFilter";
-import { Response } from "express";
+import { Request, Response } from "express";
+import { validate } from "../util/validation/validate";
 
 @Controller("admin/languages/")
 @UseGuards(AuthenticatedGuard)
-export class LanguageController extends BaseController<LanguageDocument, Language> {
+export class LanguageController {
   constructor(private readonly languageService: LanguageService) {
-    super(languageService);
   }
 
   @Get("create")
-  @UseInterceptors(AuthInfoInterceptor)
   @Render("admin/languages/create")
   async createView() {
   }
 
   @Get()
-  @UseInterceptors(AuthInfoInterceptor)
   @Render("admin/languages/items")
   async findAll() {
-    return await super.findAll();
+    const data = await this.languageService.findAll();
+    return { data };
   }
 
   @Post()
-  @UseFilters(new ValidationExceptionFilter("admin/languages/create", "language"))
-  async createNew(@Res() res: Response, @Body() createDto: CreateLanguageDto) {
+  async create(@Req() req: Request, @Res() res: Response, @Body() createDto: CreateLanguageDto) {
+    const errors = await validate(createDto);
+
+    if (errors) {
+      return res.render("admin/languages/create", {
+        errors,
+        language: createDto,
+        isAuthenticated: req.isAuthenticated(),
+        url: req.url
+      });
+    }
+
+    const result = await this.languageService.create(createDto);
     res.redirect("/admin/languages");
-    return await super.create(createDto);
+
+    return result;
   }
 
-  @Post(":id")
-  @UseFilters(new ValidationExceptionFilter("admin/languages/update", "data"))
-  async updateNew(@Res() res: Response, @Param("id", ParseObjectIdPipe) id: Types.ObjectId, @Body() updateDto: UpdateLanguageDto) {
+  @Post("update/:id")
+  async update(@Req() req: Request, @Res() res: Response, @Param("id", ParseObjectIdPipe) id: Types.ObjectId, @Body() updateDto: UpdateLanguageDto) {
+    const errors = await validate(updateDto);
+
+    if (errors) {
+      return res.render("admin/languages/update", {
+        errors,
+        data: updateDto,
+        isAuthenticated: req.isAuthenticated(),
+        url: req.url
+      });
+    }
+
+    const result = await this.languageService.update(id, updateDto);
     res.redirect("/admin/languages");
-    return await super.update(id, updateDto);
+
+    return result;
+  }
+
+  @Post("delete/:id")
+  @Render("admin/languages/items")
+  async remove(@Param("id", ParseObjectIdPipe) id: Types.ObjectId) {
+    await this.languageService.delete(id);
+
+    const data = await this.languageService.findAll();
+    return { data };
   }
 
   @Get(":id")
-  @UseInterceptors(AuthInfoInterceptor)
   @Render("admin/languages/update")
   async findOne(@Param("id", ParseObjectIdPipe) id: Types.ObjectId) {
-    return await super.findOne(id);
+    const data = await this.languageService.findById(id);
+    return { data };
   }
 }
