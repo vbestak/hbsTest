@@ -1,1 +1,8 @@
-paragraph
+<div class="mb-3">
+  <label for="data" class="form-label">Text content</label>
+  <input type="text" class="form-control {{setErrorClass errors (concat "components." @index ".data")}}" id="data" name="data" value="{{component.data}}" />
+
+  {{#each (getFieldErrors errors (concat "components." @index ".data"))}}
+    <div class="invalid-feedback">{{ this }}</div>
+  {{/each}}
+</div>

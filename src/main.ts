@@ -10,7 +10,6 @@ import * as mongoose from "mongoose";
 import { ConfigService } from "@nestjs/config";
 import * as session from "express-session";
 import * as passport from "passport";
-import * as hbs from "express-handlebars";
 import { engine } from "express-handlebars";
 import * as MongoDBStore from "connect-mongodb-session";
 import { UnauthorizedFilter } from "./common/filters/unauthorizedFilter";
@@ -62,7 +61,11 @@ async function bootstrap() {
       helpers: {
         getFieldErrors: getFieldErrorsHelper,
         setErrorClass: setErrorClassHelper,
-        if_eq: ifEqHelper
+        if_eq: ifEqHelper,
+        concat: (...args: any[]) => {
+          const lastIndex = args.length - 1;
+          return args.slice(0, lastIndex).join("");
+        }
       }
     })
   );

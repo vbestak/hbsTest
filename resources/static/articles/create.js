@@ -12,12 +12,13 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
-const COMPONENT_TYPES = ["EMPTY", "PARAGRAPH", "FILE", "IMAGE",/* "LINK", "QUESTIONNAIRE"*/, "QUOTE", "VIDEO"];
+const COMPONENT_TYPES = ["PARAGRAPH", "FILE", "IMAGE",/* "LINK", "QUESTIONNAIRE"*/, "QUOTE", "VIDEO"];
 const COMPONENT_BASE = `
 <div class="card card-body mt-2">
   <div class="mb-3 js-stay">
     <label>Component:</label>
     <select name="type" class="form-select">
+      <option selected disabled hidden>EMPTY</option>
       ${COMPONENT_TYPES.map((type) => `<option value="${type}">${type}</option>`)}
     </select>
    </div>
@@ -66,57 +67,29 @@ function displayInputFields(selectedType, cardBody) {
 }
 
 function generateFileInputs(container) {
-  var data = {
-    content: "file"
-  };
-
-  container.insertAdjacentHTML("beforeend", fileComponent(data));
+  container.insertAdjacentHTML("beforeend", fileComponent());
 }
 
 function generateImageInputs(container) {
-  var data = {
-    content: "image"
-  };
-
-  container.insertAdjacentHTML("beforeend", imageComponent(data));
+  container.insertAdjacentHTML("beforeend", imageComponent());
 }
 
 function generateLinkInputs(container) {
-  var data = {
-    content: "link"
-  };
-
-  container.insertAdjacentHTML("beforeend", linkComponent(data));
+  container.insertAdjacentHTML("beforeend", linkComponent());
 }
 
 function generateParagraphInputs(container) {
-  var data = {
-    content: "para"
-  };
-
-  container.insertAdjacentHTML("beforeend", paragraphComponent(data));
+  container.insertAdjacentHTML("beforeend", paragraphComponent());
 }
 
 function generateQuestionnaireInputs(container) {
-  var data = {
-    content: "q"
-  };
-
-  container.insertAdjacentHTML("beforeend", questionnaireComponent(data));
+  container.insertAdjacentHTML("beforeend", questionnaireComponent());
 }
 
 function generateQuoteInputs(container) {
-  var data = {
-    content: "quote"
-  };
-
-  container.insertAdjacentHTML("beforeend", quoteComponent(data));
+  container.insertAdjacentHTML("beforeend", quoteComponent());
 }
 
 function generateVideoInputs(container) {
-  var data = {
-    content: "video"
-  };
-
-  container.insertAdjacentHTML("beforeend", videoComponent(data));
+  container.insertAdjacentHTML("beforeend", videoComponent());
 }

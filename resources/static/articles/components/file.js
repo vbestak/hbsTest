@@ -1,7 +1,7 @@
 const componentHTML = `
      <div class="mb-3">
-      <label for="description" class="form-label">Text content</label>
-      <input type="text" class="form-control" id="description" name="data">{{content}}</input>
+      <label for="src" class="form-label">File src</label>
+      <input type="text" class="form-control" id="src" name="src" value="{{src}}" />
     </div>
   `;
 

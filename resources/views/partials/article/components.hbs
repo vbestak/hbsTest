@@ -1,20 +1,37 @@
 {{#each components}}
-  {{#if_eq type 'IMAGE'}}
-    {{> article/components/image}}
-  {{/if_eq}}
-  {{#if_eq type 'LINK'}}
-    {{> article/components/link}}
-  {{/if_eq}}
-  {{#if_eq type 'PARAGRAPH'}}
-    {{> article/components/paragraph}}
-  {{/if_eq}}
-  {{#if_eq type 'QUESTIONNAIRE'}}
-    {{> article/components/questionnaire}}
-  {{/if_eq}}
-  {{#if_eq type 'QUOTE'}}
-    {{> article/components/quote}}
-  {{/if_eq}}
-  {{#if_eq type 'VIDEO'}}
-    {{> article/components/video}}
-  {{/if_eq}}
+  <form name="component">
+    <div class="card card-body mt-2">
+      <div class="mb-3 js-stay">
+        <label>Component:</label>
+        <select name="type" class="form-select">
+          <option value="EMPTY" disabled hidden>EMPTY</option>
+          <option value="PARAGRAPH" {{#if_eq type 'PARAGRAPH'}}selected{{/if_eq}}>PARAGRAPH</option>
+          <option value="FILE" {{#if_eq type 'FILE'}}selected{{/if_eq}}>FILE</option>
+          <option value="IMAGE" {{#if_eq type 'IMAGE'}}selected{{/if_eq}}>IMAGE</option>
+          <option value="QUOTE" {{#if_eq type 'QUOTE'}}selected{{/if_eq}}>QUOTE</option>
+          <option value="VIDEO" {{#if_eq type 'VIDEO'}}selected{{/if_eq}}>VIDEO</option>
+        </select>
+      </div>
+
+      {{#if_eq type 'IMAGE'}}
+        {{> article/components/image component=this errors=../errors}}
+      {{/if_eq}}
+      {{#if_eq type 'LINK'}}
+        {{> article/components/link component=this errors=../errors}}
+      {{/if_eq}}
+      {{#if_eq type 'PARAGRAPH'}}
+        {{> article/components/paragraph component=this errors=../errors}}
+      {{/if_eq}}
+      {{#if_eq type 'QUESTIONNAIRE'}}
+        {{> article/components/questionnaire component=this errors=../errors}}
+      {{/if_eq}}
+      {{#if_eq type 'QUOTE'}}
+        {{> article/components/quote component=this errors=../errors}}
+      {{/if_eq}}
+      {{#if_eq type 'VIDEO'}}
+        {{> article/components/video component=this errors=../errors}}
+      {{/if_eq}}
+
+    </div>
+  </form>
 {{/each}}

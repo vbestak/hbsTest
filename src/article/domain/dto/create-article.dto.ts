@@ -3,6 +3,8 @@ import { IsBoolean, IsDate, IsNotEmpty, IsOptional, Max, MaxLength, ValidateNest
 import { Transform, Type } from "class-transformer";
 import { CreateArticleIntlDto } from "./create-articleIntl.dto";
 import { ArticleDocument } from "../entities/article.entity";
+import { CreateParagraphComponentDto } from "./components/create/create-paragraph.dto";
+import { ArticleComponentType } from "../entities/components/articleComponentType.enum";
 
 export class CreateArticleDto implements Partial<ArticleDocument> {
   @MaxLength(120)
@@ -27,7 +29,16 @@ export class CreateArticleDto implements Partial<ArticleDocument> {
   articleIntl: CreateArticleIntlDto[];
 
   @ValidateNested({ each: true })
-  @Type(() => ArticleComponent)
+  @Type(() => CreateParagraphComponentDto, {
+    discriminator: {
+      property: "type",
+      subTypes: [{
+        name: ArticleComponentType.PARAGRAPH,
+        value: CreateParagraphComponentDto
+      }]
+    },
+    keepDiscriminatorProperty: true
+  })
   components: ArticleComponent[];
 
   @IsBoolean()

@@ -45,11 +45,11 @@
         <div class="mb-4">
           <h4>Article components</h4>
 
-          <div id="componentContainer" class="mt-3"></div>
+          <div id="componentContainer" class="mt-3">
+            {{> article/components components=article.components errors=errors}}
+          </div>
 
           <div class="text-center">
-            {{> article/components components=article.components}}
-
             <button type="button" id="createComponentButton" class="btn btn-primary mt-3">Add Component</button>
           </div>
         </div>
