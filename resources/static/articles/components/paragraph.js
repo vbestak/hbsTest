@@ -1,8 +1,10 @@
 const componentHTML = `
-     <div class="mb-3">
-      <label for="description" class="form-label">Text content</label>
-      <input type="text" class="form-control" id="data" name="data" value="{{data}}" />
-    </div>
+    <fieldset data-group="componentIntl" data-group-array>
+       <fieldset>
+        <label for="description" class="form-label">Text content</label>
+        <input type="text" class="form-control" id="data" name="data" value="{{data}}" />
+      </fieldset>
+    </fieldset>
   `;
 
 const template = Handlebars.compile(componentHTML);

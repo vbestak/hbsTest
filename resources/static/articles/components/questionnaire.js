@@ -1,7 +1,9 @@
 const componentHTML = `
-     <div class="mb-3">
-      <!-- TODO -->
-    </div>
+    <fieldset data-group="componentIntl" data-group-array>
+       <fieldset>
+        <!-- TODO -->
+       </fieldset>
+    </fieldset>
   `;
 
 const template = Handlebars.compile(componentHTML);

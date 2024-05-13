@@ -1,30 +1,19 @@
-function submitForm(event) {
+import { formToPojo } from "../utils/index.js";
+import { initiateComponentSelect, initiateCreateComponent } from "./create.js";
+
+const FORM_ID = "article"
+
+function onSubmit(event) {
   event.preventDefault();
-
-  let article = {
-    components: [],
-    articleIntl: []
-  };
-
-  const forms = document.querySelectorAll("form");
-  forms.forEach(form => {
-    const formData = new FormData(form);
-
-    if (form.name === "component") {
-      article["components"].push(formDataToObject(formData));
-    } else if (form.name === "articleIntl") {
-      article["articleIntl"].push(formDataToObject(formData));
-    } else {
-      article = { ...article, ...formDataToObject(formData) };
-    }
-  });
+  const formPojo = formToPojo(this);
+  const jsonData = JSON.stringify(formPojo);
 
   const options = {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify(article)
+    body: jsonData
   };
 
   fetch("/admin/articles", options)
@@ -42,19 +31,21 @@ function submitForm(event) {
       const doc = parser.parseFromString(html, "text/html");
 
       document.documentElement.innerHTML = doc.documentElement.innerHTML;
+
+      initiateOnSubmit();
+      initiateCreateComponent();
+      initiateComponentSelect(document.getElementById(FORM_ID));
     })
     .catch(error => {
       console.error("There was a problem with the fetch operation:", error);
     });
 }
 
-
-function formDataToObject(formData) {
-  const res = {};
-
-  for (const [key, value] of formData.entries()) {
-    res[key] = value;
-  }
-
-  return res;
+function initiateOnSubmit() {
+  document.getElementById(FORM_ID).addEventListener("submit", onSubmit);
 }
+
+document.addEventListener("DOMContentLoaded", function() {
+  initiateOnSubmit()
+});
+

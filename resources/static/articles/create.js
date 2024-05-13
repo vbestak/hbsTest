@@ -1,20 +1,18 @@
-import { paragraphComponent } from "./components/paragraph.js";
-import { fileComponent } from "./components/file.js";
-import { imageComponent } from "./components/image.js";
-import { linkComponent } from "./components/link.js";
-import { questionnaireComponent } from "./components/questionnaire.js";
-import { quoteComponent } from "./components/quote.js";
-import { videoComponent } from "./components/video.js";
-
-document.addEventListener("DOMContentLoaded", function() {
-  const createButton = document.getElementById("createComponentButton");
-  createButton.addEventListener("click", createComponent);
-});
+import {
+  fileComponent,
+  imageComponent,
+  linkComponent,
+  paragraphComponent,
+  questionnaireComponent,
+  quoteComponent,
+  videoComponent
+} from "./components/index.js";
+import { selectClosestParentFieldset } from "../utils/index.js";
 
 
 const COMPONENT_TYPES = ["PARAGRAPH", "FILE", "IMAGE",/* "LINK", "QUESTIONNAIRE"*/, "QUOTE", "VIDEO"];
 const COMPONENT_BASE = `
-<div class="card card-body mt-2">
+<fieldset class="card card-body mt-2">
   <div class="mb-3 js-stay">
     <label>Component:</label>
     <select name="type" class="form-select">
@@ -22,21 +20,19 @@ const COMPONENT_BASE = `
       ${COMPONENT_TYPES.map((type) => `<option value="${type}">${type}</option>`)}
     </select>
    </div>
-</div>
+</fieldset>
 `;
 
 function createComponent() {
   const container = document.getElementById("componentContainer");
-  const componentHolder = document.createElement("form");
-
-  componentHolder.name = "component";
+  const componentHolder = document.createElement("div");
 
   componentHolder.innerHTML = COMPONENT_BASE;
   container.appendChild(componentHolder);
 
   componentHolder.querySelector("select").addEventListener("change", function(ev) {
     const selectedType = ev.target.value;
-    displayInputFields(selectedType, componentHolder.querySelector("div"));
+    displayInputFields(selectedType, componentHolder.querySelector("fieldset"));
   });
 }
 
@@ -93,3 +89,25 @@ function generateQuoteInputs(container) {
 function generateVideoInputs(container) {
   container.insertAdjacentHTML("beforeend", videoComponent());
 }
+
+
+
+function initiateCreateComponent() {
+  const createButton = document.getElementById("createComponentButton");
+  createButton.addEventListener("click", createComponent);
+}
+
+function initiateComponentSelect(form) {
+  form.getElementById("componentContainer").querySelectorAll("select").forEach((select) => {
+    select.addEventListener("change", function(ev) {
+      const selectedType = ev.target.value;
+      displayInputFields(selectedType, selectClosestParentFieldset(select));
+    });
+  })
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+  initiateCreateComponent();
+});
+
+export { initiateComponentSelect, initiateCreateComponent }

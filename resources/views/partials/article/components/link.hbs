@@ -1,4 +1,8 @@
-<div class="mb-3">
+<fieldset>
   <label for="link" class="form-label">Link</label>
-  <input class="form-control" id="link" name="link" value="{{component.link}}"/>
-</div>
+  <input class="form-control {{setErrorClass errors (concat "components." @index ".componentIntl.0.link")}}" id="link" name="link" value="{{component.componentIntl.0.link}}"/>
+
+  {{#each (getFieldErrors errors (concat "components." @index ".componentIntl.0.link"))}}
+    <div class="invalid-feedback">{{ this }}</div>
+  {{/each}}
+</fieldset>

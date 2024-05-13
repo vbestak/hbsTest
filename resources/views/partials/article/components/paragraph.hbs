@@ -1,8 +1,9 @@
-<div class="mb-3">
+<fieldset>
   <label for="data" class="form-label">Text content</label>
-  <input type="text" class="form-control {{setErrorClass errors (concat "components." @index ".data")}}" id="data" name="data" value="{{component.data}}" />
+  <input type="text" class="form-control {{setErrorClass errors (concat "components." @index ".componentIntl.0.data")}}" id="data"
+         name="data" value="{{component.componentIntl.0.data}}" />
 
-  {{#each (getFieldErrors errors (concat "components." @index ".data"))}}
+  {{#each (getFieldErrors errors (concat "components." @index ".componentIntl.0.data"))}}
     <div class="invalid-feedback">{{ this }}</div>
   {{/each}}
-</div>
+</fieldset>

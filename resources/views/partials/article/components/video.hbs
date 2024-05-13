@@ -1,4 +1,8 @@
-<div class="mb-3">
+<fieldset>
   <label for="src" class="form-label">Video src</label>
-  <input type="text" class="form-control" id="src" name="src" value="{{component.content}}" />
-</div>
+  <input type="text" class="form-control {{setErrorClass errors (concat "components." @index ".componentIntl.0.src")}}" id="src" name="src" value="{{component.componentIntl.0.src}}" />
+
+  {{#each (getFieldErrors errors (concat "components." @index ".componentIntl.0.src"))}}
+    <div class="invalid-feedback">{{ this }}</div>
+  {{/each}}
+</fieldset>
