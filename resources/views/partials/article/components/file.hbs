@@ -1,8 +1,12 @@
-<fieldset>
-  <label for="src" class="form-label">File src</label>
-  <input type="text" class="form-control {{setErrorClass errors (concat "components." @index ".componentIntl.0.src")}}" id="src" name="src" value="{{component.componentIntl.0.src}}" />
+{{#each languages}}
+  <fieldset class="content  fade" data-tab-target="{{this.id}}" role="tabpanel" aria-labelledby="{{this.id}}">
+    <label for="src" class="form-label">File src</label>
+    <input type="text"
+           class="form-control {{setErrorClass errors (concat "components." componentIndex ".componentIntl." @index ".src")}}" id="src"
+           name="src" value="{{(lookup "component" "componentIntl" @index ".src")}}" />
 
-  {{#each (getFieldErrors errors (concat "components." @index ".componentIntl.0.data"))}}
-    <div class="invalid-feedback">{{ this }}</div>
-  {{/each}}
-</fieldset>
+    {{#each (getFieldErrors errors (concat "components." componentIndex ".componentIntl." @index ".src"))}}
+      <div class="invalid-feedback">{{ this }}</div>
+    {{/each}}
+  </fieldset>
+{{/each}}

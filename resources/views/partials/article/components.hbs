@@ -14,22 +14,22 @@
 
     <fieldset class="mb-3" data-group="componentIntl" data-group-array>
       {{#if_eq type 'IMAGE'}}
-        {{> article/components/image component=this errors=../errors}}
+        {{> article/components/image component=this errors=../errors languages=../languages componentIndex=@index}}
       {{/if_eq}}
       {{#if_eq type 'LINK'}}
-        {{> article/components/link component=this errors=../errors}}
+        {{> article/components/link component=this errors=../errors languages=../languages componentIndex=@index}}
       {{/if_eq}}
       {{#if_eq type 'PARAGRAPH'}}
-        {{> article/components/paragraph component=this errors=../errors}}
+        {{> article/components/paragraph component=this errors=../errors languages=../languages componentIndex=@index}}
       {{/if_eq}}
       {{#if_eq type 'QUESTIONNAIRE'}}
-        {{> article/components/questionnaire component=this errors=../errors}}
+        {{> article/components/questionnaire component=this errors=../errors languages=../languages componentIndex=@index}}
       {{/if_eq}}
       {{#if_eq type 'QUOTE'}}
-        {{> article/components/quote component=this errors=../errors}}
+        {{> article/components/quote component=this errors=../errors languages=../languages componentIndex=@index}}
       {{/if_eq}}
       {{#if_eq type 'VIDEO'}}
-        {{> article/components/video component=this errors=../errors}}
+        {{> article/components/video component=this errors=../errors languages=../languages componentIndex=@index}}
       {{/if_eq}}
     </fieldset>
   </fieldset>

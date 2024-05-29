@@ -9,8 +9,8 @@ import {
 } from "./components/index.js";
 import { selectClosestParentFieldset } from "../utils/index.js";
 
-
-const COMPONENT_TYPES = ["PARAGRAPH", "FILE", "IMAGE",/* "LINK", "QUESTIONNAIRE"*/, "QUOTE", "VIDEO"];
+const TAB_ATTRIBUTE = "data-tab-target";
+const COMPONENT_TYPES = ["PARAGRAPH", "FILE", "IMAGE", "QUOTE", "VIDEO"];
 const COMPONENT_BASE = `
 <fieldset class="card card-body mt-2">
   <div class="mb-3 js-stay">
@@ -22,6 +22,16 @@ const COMPONENT_BASE = `
    </div>
 </fieldset>
 `;
+
+function getLanguages() {
+  const DEFAULT = [];
+  const container = document.getElementById("langData");
+  if (!container) return DEFAULT;
+
+  const formData = new FormData(container);
+  const formObject = Object.fromEntries(formData);
+  return Object.values(formObject);
+}
 
 function createComponent() {
   const container = document.getElementById("componentContainer");
@@ -42,55 +52,71 @@ function displayInputFields(selectedType, cardBody) {
     cardBody.removeChild(child);
   });
 
+  const data = { languages: getLanguages() };
+
   switch (selectedType) {
     case "FILE":
-      return generateFileInputs(cardBody);
+      generateFileInputs(cardBody, data);
+      break;
     case "IMAGE":
-      return generateImageInputs(cardBody);
+      generateImageInputs(cardBody, data);
+      break;
     case "LINK":
-      return generateLinkInputs(cardBody);
+      generateLinkInputs(cardBody, data);
+      break;
     case "PARAGRAPH":
-      return generateParagraphInputs(cardBody);
+      generateParagraphInputs(cardBody, data);
+      break;
     case "QUESTIONNAIRE":
-      return generateQuestionnaireInputs(cardBody);
+      generateQuestionnaireInputs(cardBody, data);
+      break;
     case "QUOTE":
-      return generateQuoteInputs(cardBody);
+      generateQuoteInputs(cardBody, data);
+      break;
     case "VIDEO":
-      return generateVideoInputs(cardBody);
+      generateVideoInputs(cardBody, data);
+      break;
     default:
-      return;
+      break;
+  }
+
+  resetActiveTab();
+}
+
+function generateFileInputs(container, data) {
+  container.insertAdjacentHTML("beforeend", fileComponent(data));
+}
+
+function generateImageInputs(container, data) {
+  container.insertAdjacentHTML("beforeend", imageComponent(data));
+}
+
+function generateLinkInputs(container, data) {
+  container.insertAdjacentHTML("beforeend", linkComponent(data));
+}
+
+function generateParagraphInputs(container, data) {
+  container.insertAdjacentHTML("beforeend", paragraphComponent(data));
+}
+
+function generateQuestionnaireInputs(container, data) {
+  container.insertAdjacentHTML("beforeend", questionnaireComponent(data));
+}
+
+function generateQuoteInputs(container, data) {
+  container.insertAdjacentHTML("beforeend", quoteComponent(data));
+}
+
+function generateVideoInputs(container, data) {
+  container.insertAdjacentHTML("beforeend", videoComponent(data));
+}
+
+function resetActiveTab() {
+  const button = document.querySelector(`button[${TAB_ATTRIBUTE}].active`);
+  if (button) {
+    button.click();
   }
 }
-
-function generateFileInputs(container) {
-  container.insertAdjacentHTML("beforeend", fileComponent());
-}
-
-function generateImageInputs(container) {
-  container.insertAdjacentHTML("beforeend", imageComponent());
-}
-
-function generateLinkInputs(container) {
-  container.insertAdjacentHTML("beforeend", linkComponent());
-}
-
-function generateParagraphInputs(container) {
-  container.insertAdjacentHTML("beforeend", paragraphComponent());
-}
-
-function generateQuestionnaireInputs(container) {
-  container.insertAdjacentHTML("beforeend", questionnaireComponent());
-}
-
-function generateQuoteInputs(container) {
-  container.insertAdjacentHTML("beforeend", quoteComponent());
-}
-
-function generateVideoInputs(container) {
-  container.insertAdjacentHTML("beforeend", videoComponent());
-}
-
-
 
 function initiateCreateComponent() {
   const createButton = document.getElementById("createComponentButton");
@@ -98,16 +124,47 @@ function initiateCreateComponent() {
 }
 
 function initiateComponentSelect(form) {
-  form.getElementById("componentContainer").querySelectorAll("select").forEach((select) => {
+  form.querySelector("#componentContainer").querySelectorAll("select").forEach((select) => {
     select.addEventListener("change", function(ev) {
       const selectedType = ev.target.value;
       displayInputFields(selectedType, selectClosestParentFieldset(select));
     });
-  })
+  });
+}
+
+function initiateTabs() {
+  const buttons = document.querySelectorAll(`button[${TAB_ATTRIBUTE}]`);
+
+  buttons.forEach(function(button) {
+    button.addEventListener("click", function() {
+      const contents = document.querySelectorAll(".content");
+
+      const target = button.getAttribute(TAB_ATTRIBUTE);
+
+      buttons.forEach(function(button) {
+        if (button.getAttribute(TAB_ATTRIBUTE) === target) {
+          button.classList.add("active");
+        } else {
+          button.classList.remove("active");
+        }
+      });
+
+      contents.forEach(function(content) {
+        if (content.getAttribute(TAB_ATTRIBUTE) === target) {
+          content.classList.remove("d-none");
+          content.classList.add("show");
+        } else {
+          content.classList.remove("show");
+          content.classList.add("d-none");
+        }
+      });
+    });
+  });
 }
 
 document.addEventListener("DOMContentLoaded", function() {
   initiateCreateComponent();
+  initiateTabs();
 });
 
-export { initiateComponentSelect, initiateCreateComponent }
+export { initiateComponentSelect, initiateCreateComponent, initiateTabs };

@@ -7,40 +7,56 @@
           <h1>Create Article</h1>
           <button type="submit">submit</button>
 
-          <fieldset data-group="articleIntl" data-group-array>
-            <fieldset>
-              <div class="mb-3">
-                <label for="title" class="form-label">Title:</label>
-                <input type="text" value="{{article.articleIntl.0.title}}"
-                       class="form-control {{setErrorClass errors "articleIntl.0.title"}}"
-                       id="title" name="title">
+          <ul class="nav nav-tabs" id="myTab" role="tablist">
+            {{#each languages}}
+              <li class="nav-item" role="presentation">
+                <button class="nav-link {{#if_eq @index  0}}active{{/if_eq}}" value="{{this.id}}" data-tab-target="{{this.id}}"
+                        type="button" role="tab">
+                  {{this.code}}
+                </button>
+              </li>
+            {{/each}}
+          </ul>
 
-                {{#each (getFieldErrors errors "articleIntl.0.title")}}
-                  <div class="invalid-feedback">{{ this }}</div>
-                {{/each}}
-              </div>
+          <fieldset class="mt-4" data-group="articleIntl" data-group-array>
+            {{#each languages}}
+              <fieldset class="content fade {{#if_eq @index  0}}show{{else}}d-none{{/if_eq}}" data-tab-target="{{this.id}}" role="tabpanel"
+                        aria-labelledby="{{this.id}}">
+                <div class="mb-3">
+                  <label for="title" class="form-label">Title:</label>
+                  <input type="text" value="{{lookup ../article "articleIntl" @index 'title'}}"
+                         class="form-control {{setErrorClass errors (concat "articleIntl." @index ".title")}}"
+                         id="title" name="title">
 
-              <div class="mb-3">
-                <label for="description" class="form-label">Description:</label>
-                <textarea class="form-control {{setErrorClass errors "articleIntl.0.description"}}" id="description"
-                          name="description">{{article.articleIntl.0.description}}</textarea>
+                  {{#each (getFieldErrors errors (concat "articleIntl." @index ".title"))}}
+                    <div class="invalid-feedback">{{ this }}</div>
+                  {{/each}}
+                </div>
 
-                {{#each (getFieldErrors errors "articleIntl.0.description")}}
-                  <div class="invalid-feedback">{{ this }}</div>
-                {{/each}}
-              </div>
+                <div class="mb-3">
+                  <label for="description" class="form-label">Description:</label>
+                  <textarea class="form-control {{setErrorClass errors (concat "articleIntl." @index ".description")}}"
+                            id="description"
+                            name="description">{{lookup ../article "articleIntl" @index 'description'}}</textarea>
 
-              <div class="mb-3">
-                <label for="urlSlug" class="form-label">URL Slug:</label>
-                <input type="text" value="{{article.articleIntl.0.urlSlug}}"
-                       class="form-control {{setErrorClass errors "articleIntl.0.urlSlug"}}" id="urlSlug"
-                       name="urlSlug">
+                  {{#each (getFieldErrors errors (concat "articleIntl." @index ".description"))}}
+                    <div class="invalid-feedback">{{ this }}</div>
+                  {{/each}}
+                </div>
 
-                {{#each (getFieldErrors errors "articleIntl.0.urlSlug")}}
-                  <div class="invalid-feedback">{{ this }}</div>
-                {{/each}}
-              </div>
-            </fieldset>
+                <div class="mb-3">
+                  <label for="urlSlug" class="form-label">URL Slug:</label>
+                  <input type="text" value="{{lookup ../article "articleIntl" @index 'urlSlug'}}"
+                         class="form-control {{setErrorClass errors (concat "articleIntl." @index ".urlSlug")}}"
+                         id="urlSlug"
+                         name="urlSlug">
+
+                  {{#each (getFieldErrors errors (concat "articleIntl." @index ".urlSlug"))}}
+                    <div class="invalid-feedback">{{ this }}</div>
+                  {{/each}}
+                </div>
+              </fieldset>
+            {{/each}}
           </fieldset>
 
           <hr />
@@ -62,15 +78,6 @@
         <div class="col-md-3">
           <div class="mb-4">
             <h2>Article Details</h2>
-
-            <div class="mb-3">
-              <label for="lang" class="form-label">Language:</label>
-              <select class="form-select" id="lang" name="lang">
-                {{#each languages}}
-                  <option value="{{this.id}}">{{this.code}}</option>
-                {{/each}}
-              </select>
-            </div>
 
             <div class="mb-3">
               <label for="name" class="form-label">Name:</label>
@@ -141,6 +148,12 @@
   </div>
 </div>
 </div>
+
+<form class="d-none" id="langData">
+  {{#each languages}}
+    <input type="hidden" name="{{this.code}}" value="{{this.id}}" aria-label="{{this.code}}">
+  {{/each}}
+</form>
 
 <script src="/articles/create.js" type="module" defer></script>
 <script src="/articles/index.js" type="module" defer></script>

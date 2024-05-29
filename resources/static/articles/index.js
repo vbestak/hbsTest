@@ -1,7 +1,7 @@
 import { formToPojo } from "../utils/index.js";
-import { initiateComponentSelect, initiateCreateComponent } from "./create.js";
+import { initiateComponentSelect, initiateCreateComponent, initiateTabs } from "./create.js";
 
-const FORM_ID = "article"
+const FORM_ID = "article";
 
 function onSubmit(event) {
   event.preventDefault();
@@ -31,11 +31,12 @@ function onSubmit(event) {
       const doc = parser.parseFromString(html, "text/html");
 
       document.documentElement.innerHTML = doc.documentElement.innerHTML;
-
+    }).then(() => {
       initiateOnSubmit();
       initiateCreateComponent();
       initiateComponentSelect(document.getElementById(FORM_ID));
-    })
+      initiateTabs();
+  })
     .catch(error => {
       console.error("There was a problem with the fetch operation:", error);
     });
@@ -46,6 +47,6 @@ function initiateOnSubmit() {
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-  initiateOnSubmit()
+  initiateOnSubmit();
 });
 

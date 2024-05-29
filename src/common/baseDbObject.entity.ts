@@ -5,7 +5,7 @@ import {ApiHideProperty, ApiProperty} from "@nestjs/swagger";
 
 export class BaseDbObjectEntity {
     @ApiProperty({type: "string", name: "id"})
-    @Expose({ name: 'id' })
+    @Expose({ name: 'id', toPlainOnly: true })
     @Transform(({ value }) => value.toString(), { toPlainOnly: true })
     _id: mongoose.Schema.Types.ObjectId;
 

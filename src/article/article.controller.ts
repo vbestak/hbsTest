@@ -8,6 +8,7 @@ import { Request, Response } from "express";
 import { AuthenticatedGuard } from "../auth/guard/authenticated.guard";
 import { validate } from "../util/validation/validate";
 import { LanguageService } from "../language/service/language.service";
+import { instanceToPlain } from "class-transformer";
 
 @Controller("admin/articles")
 @UseGuards(AuthenticatedGuard)
@@ -42,8 +43,8 @@ export class ArticleController {
         errors,
         article: createDto,
         isAuthenticated: req.isAuthenticated(),
-        languages,
-        url: req.url,
+        languages: languages.map(language => instanceToPlain(language)),
+        url: req.url
       });
     }
 

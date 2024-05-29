@@ -13,11 +13,9 @@ import * as passport from "passport";
 import { engine } from "express-handlebars";
 import * as MongoDBStore from "connect-mongodb-session";
 import { UnauthorizedFilter } from "./common/filters/unauthorizedFilter";
-import { getFieldErrorsHelper } from "./util/handlebars/getFieldErrors.helper";
-import { setErrorClassHelper } from "./util/handlebars/setErrorClass.helper";
 import { TransformPipe } from "./common/pipes/transform.pipe";
 import { AuthInfoInterceptor } from "./common/interceptors/authInfoInterceptor";
-import { ifEqHelper } from "./util/handlebars/ifEq.helper";
+import { handlebarsHelpers } from "./util/handlebars";
 
 
 async function bootstrap() {
@@ -58,15 +56,7 @@ async function bootstrap() {
       defaultLayout: "base",
       layoutsDir: join(__dirname, "..", "resources", "views", "layouts"),
       partialsDir: join(__dirname, "..", "resources", "views", "partials"),
-      helpers: {
-        getFieldErrors: getFieldErrorsHelper,
-        setErrorClass: setErrorClassHelper,
-        if_eq: ifEqHelper,
-        concat: (...args: any[]) => {
-          const lastIndex = args.length - 1;
-          return args.slice(0, lastIndex).join("");
-        }
-      }
+      helpers: handlebarsHelpers
     })
   );
   app.setViewEngine("hbs");
