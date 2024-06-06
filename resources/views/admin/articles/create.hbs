@@ -22,6 +22,8 @@
             {{#each languages}}
               <fieldset class="content fade {{#if_eq @index  0}}show{{else}}d-none{{/if_eq}}" data-tab-target="{{this.id}}" role="tabpanel"
                         aria-labelledby="{{this.id}}">
+                <input type="hidden" name="language" value="{{this.id}}" />
+
                 <div class="mb-3">
                   <label for="title" class="form-label">Title:</label>
                   <input type="text" value="{{lookup ../article "articleIntl" @index 'title'}}"
