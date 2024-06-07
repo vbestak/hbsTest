@@ -2,6 +2,7 @@ const componentHTML = `
      <fieldset data-group="componentIntl" data-group-array>
        {#each languages}}
          <fieldset class="content fade d-none" role="tabpanel" data-tab-target="{{this}}" aria-labelledby="{{this}}">
+           <input type="hidden" name="language" value="{{this}}" />
            <label for="link" class="form-label">Link</label>
            <input class="form-control" id="link" name="link" value="{{link}}"/>
          </fieldset>
