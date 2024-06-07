@@ -167,4 +167,4 @@ document.addEventListener("DOMContentLoaded", function() {
   initiateTabs();
 });
 
-export { initiateComponentSelect, initiateCreateComponent, initiateTabs };
+export { initiateComponentSelect, initiateCreateComponent, initiateTabs, resetActiveTab };

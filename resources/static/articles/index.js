@@ -1,5 +1,5 @@
 import { formToPojo } from "../utils/index.js";
-import { initiateComponentSelect, initiateCreateComponent, initiateTabs } from "./create.js";
+import { initiateComponentSelect, initiateCreateComponent, initiateTabs, resetActiveTab } from "./create.js";
 
 const FORM_ID = "article";
 
@@ -36,6 +36,7 @@ function onSubmit(event) {
       initiateCreateComponent();
       initiateComponentSelect(document.getElementById(FORM_ID));
       initiateTabs();
+      resetActiveTab()
   })
     .catch(error => {
       console.error("There was a problem with the fetch operation:", error);

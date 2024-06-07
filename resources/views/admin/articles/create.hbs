@@ -27,21 +27,21 @@
                 <div class="mb-3">
                   <label for="title" class="form-label">Title:</label>
                   <input type="text" value="{{lookup ../article "articleIntl" @index 'title'}}"
-                         class="form-control {{setErrorClass errors (concat "articleIntl." @index ".title")}}"
+                         class="form-control {{setErrorClass ../errors (concat "articleIntl." @index ".title")}}"
                          id="title" name="title">
 
-                  {{#each (getFieldErrors errors (concat "articleIntl." @index ".title"))}}
+                  {{#each (getFieldErrors ../errors (concat "articleIntl." @index ".title"))}}
                     <div class="invalid-feedback">{{ this }}</div>
                   {{/each}}
                 </div>
 
                 <div class="mb-3">
                   <label for="description" class="form-label">Description:</label>
-                  <textarea class="form-control {{setErrorClass errors (concat "articleIntl." @index ".description")}}"
+                  <textarea class="form-control {{setErrorClass ../errors (concat "articleIntl." @index ".description")}}"
                             id="description"
                             name="description">{{lookup ../article "articleIntl" @index 'description'}}</textarea>
 
-                  {{#each (getFieldErrors errors (concat "articleIntl." @index ".description"))}}
+                  {{#each (getFieldErrors ../errors (concat "articleIntl." @index ".description"))}}
                     <div class="invalid-feedback">{{ this }}</div>
                   {{/each}}
                 </div>
@@ -49,11 +49,11 @@
                 <div class="mb-3">
                   <label for="urlSlug" class="form-label">URL Slug:</label>
                   <input type="text" value="{{lookup ../article "articleIntl" @index 'urlSlug'}}"
-                         class="form-control {{setErrorClass errors (concat "articleIntl." @index ".urlSlug")}}"
+                         class="form-control {{setErrorClass ../errors (concat "articleIntl." @index ".urlSlug")}}"
                          id="urlSlug"
                          name="urlSlug">
 
-                  {{#each (getFieldErrors errors (concat "articleIntl." @index ".urlSlug"))}}
+                  {{#each (getFieldErrors ../errors (concat "articleIntl." @index ".urlSlug"))}}
                     <div class="invalid-feedback">{{ this }}</div>
                   {{/each}}
                 </div>
