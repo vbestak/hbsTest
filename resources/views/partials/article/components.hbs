@@ -13,6 +13,9 @@
     </div>
 
     <fieldset class="mb-3" data-group="componentIntl" data-group-array>
+      {{#if_eq type 'FILE'}}
+        {{> article/components/file component=this errors=../errors languages=../languages componentIndex=@index}}
+      {{/if_eq}}
       {{#if_eq type 'IMAGE'}}
         {{> article/components/image component=this errors=../errors languages=../languages componentIndex=@index}}
       {{/if_eq}}

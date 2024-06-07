@@ -1,11 +1,13 @@
 {{#each languages}}
   <fieldset class="content  fade" data-tab-target="{{this.id}}" role="tabpanel" aria-labelledby="{{this.id}}">
+    <input type="hidden" name="language" value="{{this.id}}" />
+
     <label for="src" class="form-label">File src</label>
     <input type="text"
-           class="form-control {{setErrorClass errors (concat "components." componentIndex ".componentIntl." @index ".src")}}" id="src"
-           name="src" value="{{(lookup "component" "componentIntl" @index ".src")}}" />
+           class="form-control {{setErrorClass ../errors (concat "components." ../componentIndex ".componentIntl." @index ".src")}}" id="src"
+           name="src" value="{{lookup ../component "componentIntl" @index "src"}}" />
 
-    {{#each (getFieldErrors errors (concat "components." componentIndex ".componentIntl." @index ".src"))}}
+    {{#each (getFieldErrors ../errors (concat "components." ../componentIndex ".componentIntl." @index ".src"))}}
       <div class="invalid-feedback">{{ this }}</div>
     {{/each}}
   </fieldset>
