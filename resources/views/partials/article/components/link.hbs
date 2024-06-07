@@ -1,8 +1,13 @@
-<fieldset>
-  <label for="link" class="form-label">Link</label>
-  <input class="form-control {{setErrorClass errors (concat "components." @index ".componentIntl.0.link")}}" id="link" name="link" value="{{component.componentIntl.0.link}}"/>
+{{#each languages}}
+  <fieldset class="content  fade" data-tab-target="{{this.id}}" role="tabpanel" aria-labelledby="{{this.id}}">
+    <input type="hidden" name="language" value="{{this.id}}" />
 
-  {{#each (getFieldErrors errors (concat "components." @index ".componentIntl.0.link"))}}
-    <div class="invalid-feedback">{{ this }}</div>
-  {{/each}}
-</fieldset>
+    <label for="link" class="form-label">Link</label>
+    <input class="form-control {{setErrorClass ../errors (concat "components." ../componentIndex ".componentIntl." @index ".link")}}" id="link"
+           name="link" value="{{lookup ../component "componentIntl" @index "link"}}" />
+
+    {{#each (getFieldErrors ../errors (concat "components." ../componentIndex ".componentIntl." @index ".link"))}}
+      <div class="invalid-feedback">{{ this }}</div>
+    {{/each}}
+  </fieldset>
+{{/each}}

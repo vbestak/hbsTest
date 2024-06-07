@@ -1,9 +1,14 @@
-<fieldset>
-  <label for="data" class="form-label">Text content</label>
-  <input type="text" class="form-control {{setErrorClass errors (concat "components." @index ".componentIntl.0.data")}}" id="data"
-         name="data" value="{{component.componentIntl.0.data}}" />
+{{#each languages}}
+  <fieldset class="content  fade" data-tab-target="{{this.id}}" role="tabpanel" aria-labelledby="{{this.id}}">
+    <input type="hidden" name="language" value="{{this.id}}" />
 
-  {{#each (getFieldErrors errors (concat "components." @index ".componentIntl.0.data"))}}
-    <div class="invalid-feedback">{{ this }}</div>
-  {{/each}}
-</fieldset>
+    <label for="data" class="form-label">Text content</label>
+    <input type="text"
+           class="form-control {{setErrorClass ../errors (concat "components." ../componentIndex ".componentIntl." @index ".data")}}" id="data"
+           name="data" value="{{lookup ../component "componentIntl" @index "data"}}" />
+
+    {{#each (getFieldErrors ../errors (concat "components." ../componentIndex ".componentIntl." @index ".data"))}}
+      <div class="invalid-feedback">{{ this }}</div>
+    {{/each}}
+  </fieldset>
+{{/each}}

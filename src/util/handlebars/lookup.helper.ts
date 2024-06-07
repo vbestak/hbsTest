@@ -2,7 +2,7 @@ import { isRecord } from "../validation/isRecord";
 
 export function lookupHelper(obj: unknown, ...rest: unknown[]): string | unknown {
   if(!obj) return undefined;
-  if(!isRecord(obj)) return "Argument is not a Record";
+  if(!isRecord(obj)) return undefined;
 
   let res: unknown = {...(obj as Record<string, unknown>)};
 
