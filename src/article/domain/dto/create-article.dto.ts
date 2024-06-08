@@ -5,6 +5,11 @@ import { CreateArticleIntlDto } from "./create-articleIntl.dto";
 import { ArticleDocument } from "../entities/article.entity";
 import { CreateParagraphComponentDto } from "./components/create/create-paragraph.dto";
 import { ArticleComponentType } from "../entities/components/articleComponentType.enum";
+import { CreateFileComponentDto } from "./components/create/create-file.dto";
+import { CreateImageComponentDto } from "./components/create/create-image.dto";
+import { CreateLinkComponentDto } from "./components/create/create-link.dto";
+import { CreateQuoteComponentDto } from "./components/create/create-quote.dto";
+import { CreateVideoComponentDto } from "./components/create/create-video.dto";
 
 export class CreateArticleDto implements Partial<ArticleDocument> {
   @MaxLength(120)
@@ -33,9 +38,30 @@ export class CreateArticleDto implements Partial<ArticleDocument> {
     discriminator: {
       property: "type",
       subTypes: [{
-        name: ArticleComponentType.PARAGRAPH,
-        value: CreateParagraphComponentDto
-      }]
+          name: ArticleComponentType.FILE,
+          value: CreateFileComponentDto
+        },
+        {
+          name: ArticleComponentType.IMAGE,
+          value: CreateImageComponentDto
+        },
+        {
+          name: ArticleComponentType.LINK,
+          value: CreateLinkComponentDto
+        },
+        {
+          name: ArticleComponentType.PARAGRAPH,
+          value: CreateParagraphComponentDto
+        },
+        {
+          name: ArticleComponentType.QUOTE,
+          value: CreateQuoteComponentDto
+        },
+        {
+          name: ArticleComponentType.VIDEO,
+          value: CreateVideoComponentDto
+        },
+      ]
     },
     keepDiscriminatorProperty: true
   })

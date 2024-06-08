@@ -3,11 +3,17 @@ import { ArticleComponentType } from "../articleComponentType.enum";
 import { ArticleComponent } from "../articleComponent.entity";
 import { ArticleComponentIntl } from "../articleComponentIntl.entity";
 
+@Schema({ timestamps: true })
+export class FileComponentIntl extends ArticleComponentIntl {
+  @Prop()
+  src: string;
+}
+
 @Schema()
 export class FileComponent extends ArticleComponent {
   @Prop()
   type: ArticleComponentType.FILE;
 
-  @Prop({ type: [ArticleComponentIntl] })
-  componentIntl: ArticleComponentIntl[];
+  @Prop({ type: [FileComponentIntl] })
+  componentIntl: FileComponentIntl[];
 }
