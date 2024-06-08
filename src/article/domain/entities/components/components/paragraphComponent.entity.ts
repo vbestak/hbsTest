@@ -11,7 +11,7 @@ export class ParagraphComponentIntl extends ArticleComponentIntl {
 }
 
 @Schema()
-export class ParagraphComponentEntity extends ArticleComponent {
+export class ParagraphComponent extends ArticleComponent {
 
   @Prop()
   type: ArticleComponentType.PARAGRAPH;

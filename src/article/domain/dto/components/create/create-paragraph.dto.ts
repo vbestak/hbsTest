@@ -1,19 +1,24 @@
-import { ArticleComponentIntl } from "../../../entities/components/articleComponentIntl.entity";
 import { ArticleComponentType } from "../../../entities/components/articleComponentType.enum";
 import { Language } from "src/language/domain/entities/language.entity";
-import { IsEnum, IsNotEmpty, MaxLength, ValidateNested } from "class-validator";
+import { IsEnum, IsMongoId, IsNotEmpty, MaxLength, ValidateNested } from "class-validator";
 import { Type } from "class-transformer";
-import { ParagraphComponentEntity } from "../../../entities/components/components/paragraphComponent.entity";
+import {
+  ParagraphComponent,
+  ParagraphComponentIntl
+} from "../../../entities/components/components/paragraphComponent.entity";
 
 
-export class CreateParagraphComponentIntlDto extends ArticleComponentIntl {
+export class CreateParagraphComponentIntlDto extends ParagraphComponentIntl {
   @MaxLength(1500)
   @IsNotEmpty()
   data: string;
+
+  @IsMongoId()
+  @IsNotEmpty()
   language: Language;
 }
 
-export class CreateParagraphComponentDto extends ParagraphComponentEntity {
+export class CreateParagraphComponentDto extends ParagraphComponent {
   @IsEnum(ArticleComponentType)
   type: ArticleComponentType.PARAGRAPH;
 
