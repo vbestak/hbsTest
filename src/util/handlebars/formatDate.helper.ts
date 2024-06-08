@@ -1,4 +1,6 @@
-export function formatDateHelper(date: Date, format: string): string {
+export function formatDateHelper(date: Date | undefined, format: string): string {
+  if(!date) return undefined;
+
   const pad = (number: number) => (number < 10 ? '0' : '') + number;
 
   const replacements = {

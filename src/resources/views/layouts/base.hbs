@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Blog</title>
+
+  <!-- MANIFEST -->
+  <link rel="manifest" href="/public/site.webmanifest">
+
+  <!--  FAVICON -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/public/images/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/images/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/images/favicon/favicon-16x16.png">
+
+  <!-- STYLES -->
+  <link rel="stylesheet" href="/public/styles/font-awesome/all.min.css">
+  <link href="/public/styles/bootstrap/bootstrap.min.css" rel="stylesheet">
+
+  <!-- JS -->
+  <script src="/public/js/bootstrap/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/handlebars@4.7.7/dist/handlebars.min.js"></script>
+
+  <script src="/public/js/toasts.js"></script>
+
+  <style>
+    header {
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header
+    class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+    <div class="col-md-3 mb-2 mb-md-0">
+      <a href="/" class="d-inline-flex link-body-emphasis text-decoration-none fw-bold">
+        Blog
+      </a>
+    </div>
+
+    {{#if isAuthenticated}}
+      <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+        <li><a href="/" class="nav-link px-2 link-secondary">Home</a></li>
+        <li><a href="/admin/articles" class="nav-link px-2 link-secondary">Articles</a></li>
+        <li><a href="/admin/languages" class="nav-link px-2 link-secondary">Languages</a></li>
+      </ul>
+    {{/if}}
+
+    <div class="col-md-3 text-end">
+      {{#if isAuthenticated}}
+        <form method="post" action="/logout">
+          <button type="submit" class="btn btn-primary">Logout</button>
+        </form>
+      {{else}}
+        <a href="/login" type="button" class="btn btn-outline-primary me-2">Login</a>
+      {{/if}}
+    </div>
+  </header>
+</div>
+
+<main>
+  {{{body}}}
+</main>
+
+{{> toasts}}
+</body>
+</html>

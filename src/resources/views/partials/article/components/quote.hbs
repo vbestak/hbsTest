@@ -1,0 +1,13 @@
+{{#each languages}}
+  <fieldset class="content  fade" data-tab-target="{{this.id}}" role="tabpanel" aria-labelledby="{{this.id}}">
+    <input type="hidden" name="language" value="{{this.id}}" />
+
+    <label for="data" class="form-label">Quote</label>
+    <textarea class="form-control {{setErrorClass ../errors (concat "components." ../componentIndex ".componentIntl." @index ".data")}}"
+              id="data" name="data">{{lookup ../component "componentIntl" @index "data"}}</textarea>
+
+    {{#each (getFieldErrors ../errors (concat "components." ../componentIndex ".componentIntl." @index ".data"))}}
+      <div class="invalid-feedback">{{ this }}</div>
+    {{/each}}
+  </fieldset>
+{{/each}}
