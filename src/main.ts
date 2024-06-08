@@ -47,15 +47,15 @@ async function bootstrap() {
   app.useGlobalInterceptors(new AuthInfoInterceptor());
 
   // express-handlebars setup
-  app.useStaticAssets(join(__dirname, "..", "resources", "static"));
-  app.setBaseViewsDir(join(__dirname, "..", "resources", "views"));
+  app.useStaticAssets(join(__dirname, "resources", "static"), {prefix: '/public/',});
+  app.setBaseViewsDir(join(__dirname, "resources", "views"));
   app.engine(
     "hbs",
     engine({
       extname: "hbs",
       defaultLayout: "base",
-      layoutsDir: join(__dirname, "..", "resources", "views", "layouts"),
-      partialsDir: join(__dirname, "..", "resources", "views", "partials"),
+      layoutsDir: join(__dirname, "resources", "views", "layouts"),
+      partialsDir: join(__dirname, "resources", "views", "partials"),
       helpers: handlebarsHelpers
     })
   );
