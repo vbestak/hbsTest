@@ -134,7 +134,7 @@
 
             <div class="mb-3">
               <label for="scheduledAt" class="form-label">Scheduled At:</label>
-              <input type="datetime-local" value="{{article.scheduledAt}}"
+              <input type="datetime-local" value="{{formatDate article.scheduledAt "yyyy-MM-ddThh:mm"}}"
                      class="form-control {{setErrorClass errors "scheduledAt"}}" id="scheduledAt" name="scheduledAt">
 
               {{#each (getFieldErrors errors "scheduledAt")}}
