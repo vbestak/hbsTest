@@ -6,9 +6,8 @@ import { Document } from "mongoose";
 
 export type ArticleComponentDocument = ArticleComponent & Document;
 
-@Schema({ timestamps: true })
+@Schema({discriminatorKey: "type", timestamps: true })
 export class ArticleComponent extends BaseDbObjectEntity {
-  @Prop()
   type: ArticleComponentType;
 
   @Prop()

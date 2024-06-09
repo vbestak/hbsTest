@@ -1,4 +1,4 @@
-import { Prop, Schema } from "@nestjs/mongoose";
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { ArticleComponentType } from "../articleComponentType.enum";
 import { ArticleComponent } from "../articleComponent.entity";
 import { ArticleComponentIntl } from "../articleComponentIntl.entity";
@@ -11,10 +11,10 @@ export class VideoComponentIntl extends ArticleComponentIntl {
 
 @Schema()
 export class VideoComponent extends ArticleComponent {
-
-  @Prop()
   type: ArticleComponentType.VIDEO;
 
   @Prop({ type: [VideoComponentIntl] })
   componentIntl: VideoComponentIntl[];
 }
+
+export const VideoComponentSchema = SchemaFactory.createForClass(VideoComponent);
