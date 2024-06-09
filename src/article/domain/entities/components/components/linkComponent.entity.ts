@@ -1,4 +1,4 @@
-import { Prop, Schema } from "@nestjs/mongoose";
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { ArticleComponentType } from "../articleComponentType.enum";
 import { ArticleComponent } from "../articleComponent.entity";
 import { ArticleComponentIntl } from "../articleComponentIntl.entity";
@@ -11,10 +11,10 @@ export class LinkComponentIntl extends ArticleComponentIntl {
 
 @Schema()
 export class LinkComponent extends ArticleComponent {
-
-  @Prop()
   type: ArticleComponentType.LINK;
 
   @Prop({ type: [LinkComponentIntl] })
   componentIntl: LinkComponentIntl[];
 }
+
+export const LinkComponentSchema = SchemaFactory.createForClass(LinkComponent);
